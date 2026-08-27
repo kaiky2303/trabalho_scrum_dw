@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './App.css';
-import Topbar from './components/TopBar';
+import Topbar from './components/Topbar';
 import { 
   buildInitialData, 
   SEED_NAMES, 
