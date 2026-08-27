@@ -7,7 +7,7 @@ import {
   TEAM_IMAGES, 
   BUYER_IMAGES, 
   ROLE_COLORS 
-} from './constants';
+} from './Constants';
 import {
   renderSetup, renderAlunos, renderEscalacao, renderSM,
   renderOwner, renderPO, renderDev, renderBuyerProf,
