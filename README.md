@@ -1,16 +1,32 @@
-# React + Vite
+# ✈️ Painel de Avaliação — Simulação Scrum Competitiva
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema Web interativo desenvolvido em **React** e **Vite** para a gestão, acompanhamento e avaliação da simulação competitiva de projetos aeronáuticos utilizando a metodologia **Scrum**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📋 Sumário
+- [Pré-requisitos](#-pré-requisitos)
+- [Instalação Passo a Passo](#-instalação-passo-a-passo)
+- [Estrutura de Arquivos](#-estrutura-de-arquivos)
+- [Como Executar o Projeto](#-como-executar-o-projeto)
+- [Persistência de Dados e Salvamento Automático](#-persistência-de-dados-e-salvamento-automático)
+- [Scripts Disponíveis](#-scripts-disponíveis)
+- [Funcionalidades da Aplicação](#-funcionalidades-da-aplicação)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛑 Pré-requisitos
 
-## Expanding the ESLint configuration
+Antes de iniciar a instalação e execução do projeto, certifique-se de ter os seguintes softwares instalados em seu computador:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Node.js** (Versão 18.0.0 ou superior recomendada)
+   - Baixar e instalar: [https://nodejs.org/](https://nodejs.org/)
+2. **npm** (Gerenciador de pacotes, instalado automaticamente junto com o Node.js)
+3. **Git** (Para clonagem do repositório)
+
+Para verificar se você já possui o Node.js e o npm instalados, abra seu terminal (PowerShell, Command Prompt ou Terminal do VS Code) e execute:
+
+```bash
+node -v
+npm -v

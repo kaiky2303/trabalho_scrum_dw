@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './App.css';
-import Topbar from './components/Topbar';
+import Topbar from './components/TopBar';
 import { 
   buildInitialData, 
   SEED_NAMES, 
@@ -14,10 +14,24 @@ import {
   renderBuyerProduct, renderCorrupSab, renderResult
 } from './components/TabPanel';
 
+const STORAGE_KEY = "@scrum_simulacao_data";
+
+function loadInitialState() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error("Erro ao carregar dados do localStorage:", e);
+    }
+  }
+  return buildInitialData("Maverick Aviation", "SkyForge Ind. Aeronáutica");
+}
+
 function App() {
-  let STATE = buildInitialData("Maverick Aviation", "SkyForge Ind. Aeronáutica");
+  let STATE = loadInitialState();
   let TAB = "setup";
-  let FILE_NAME = "(nenhum arquivo carregado)";
+  let FILE_NAME = localStorage.getItem(STORAGE_KEY) ? "(salvo automaticamente no navegador)" : "(nenhum arquivo carregado)";
 
   const TABS = [
     { key: "setup", label: "Configuração", fn: renderSetup },
@@ -33,11 +47,20 @@ function App() {
     { key: "result", label: "Resultado Final", fn: renderResult },
   ];
 
+  function autoSave() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(STATE));
+    } catch (err) {
+      console.error("Falha ao salvar automaticamente no localStorage:", err);
+    }
+  }
+
   function setByPath(path, value) {
     const parts = path.split(".");
     let obj = STATE;
     for (let i = 0; i < parts.length - 1; i++) obj = obj[parts[i]];
     obj[parts[parts.length - 1]] = value;
+    autoSave();
   }
 
   function renderTabs() {
@@ -91,6 +114,7 @@ function App() {
     STATE.sabotagem.empresaSabotador = rename(STATE.sabotagem.empresaSabotador);
     if (STATE.teamNames[oldVal]) { STATE.teamNames[novoNome] = STATE.teamNames[oldVal]; delete STATE.teamNames[oldVal]; }
     if (which === "nomeA") STATE.meta.empresaA = novoNome; else STATE.meta.empresaB = novoNome;
+    autoSave();
     renderPanel();
   }
 
@@ -146,6 +170,7 @@ function App() {
           if (unique.length === 0) { alert("Não encontrei nomes reconhecíveis nesse arquivo."); return; }
           if (!window.confirm(`Encontrei ${unique.length} nomes. Isso substitui a lista atual de alunos (as atribuições feitas serão perdidas). Continuar?`)) return;
           STATE.alunos = unique.map((nome, i) => ({ id: i + 1, nome, empresa: "", time: "", papel: "" }));
+          autoSave();
           renderPanel();
         } catch (err) {
           alert("Não foi possível ler este arquivo Excel.");
@@ -162,6 +187,7 @@ function App() {
   function changeFontScale(delta) {
     STATE.meta.fontScale = Math.max(12, Math.min(24, STATE.meta.fontScale + delta));
     applyFontScale();
+    autoSave();
     const lbl = document.getElementById("fontLbl");
     if (lbl) lbl.textContent = STATE.meta.fontScale + "px";
   }
@@ -191,6 +217,7 @@ function App() {
           };
         }
         FILE_NAME = file.name;
+        autoSave();
         applyFontScale();
         const fontLbl = document.getElementById("fontLbl");
         if (fontLbl) fontLbl.textContent = STATE.meta.fontScale + "px";
@@ -204,6 +231,7 @@ function App() {
 
   function handleReset() {
     if (window.confirm("Isso apaga todos os dados lançados nesta sessão (não afeta arquivos já salvos). Continuar?")) {
+      localStorage.removeItem(STORAGE_KEY);
       STATE = buildInitialData("Maverick Aviation", "SkyForge Ind. Aeronáutica");
       FILE_NAME = "(nenhum arquivo carregado)";
       applyFontScale();
@@ -252,6 +280,7 @@ function App() {
       fontReset.addEventListener("click", () => {
         STATE.meta.fontScale = 16;
         applyFontScale();
+        autoSave();
         const fontLbl = document.getElementById("fontLbl");
         if (fontLbl) fontLbl.textContent = "16px";
       });
@@ -268,7 +297,9 @@ function App() {
       <div className="tabs" id="tabsBar"></div>
       <div className="wrap">
         <div id="panelWrap"></div>
-        <div className="footer-note">Os dados ficam apenas nesta janela até você clicar em "Salvar dados (.json)". Salve com frequência, especialmente ao final de cada Sprint.</div>
+        <div className="footer-note">
+          Salvamento automático ativado. As alterações são gravadas no navegador e persistem ao recarregar a página.
+        </div>
       </div>
     </div>
   );
